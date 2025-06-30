@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.sensory.controller.DashboardController"
+      style="-fx-background-color: #f5f7fa;">
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
+    <spacing>15</spacing>
+
+    <!-- Header Section -->
+    <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 15; -fx-background-color: #3f51b5; -fx-background-radius: 8;">
+        <Label text="Arduino Temperature Monitor" style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: white;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Label fx:id="statusLabel" text="Status: Disconnected" style="-fx-text-fill: white; -fx-font-size: 14; -fx-font-weight: bold;"/>
+            <ComboBox fx:id="portComboBox" promptText="Select COM Port" prefWidth="180"
+                      style="-fx-background-color: white; -fx-font-size: 12;"/>
+            <Button fx:id="connectButton" text="Connect" onAction="#handleConnect"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-font-size: 12; -fx-background-radius: 6;"/>
+            <Button fx:id="disconnectButton" text="Disconnect" onAction="#handleDisconnect" disable="true"
+                    style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-font-size: 12; -fx-background-radius: 6;"/>
+        </HBox>
+    </HBox>
+
+    <!-- Main Content -->
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <!-- Left Panel - Statistics and Controls -->
+        <VBox spacing="15" prefWidth="300" minWidth="280"
+              style="-fx-padding: 20; -fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+
+            <!-- Current Temperature Display -->
+            <VBox spacing="8" style="-fx-padding: 25; -fx-background-color: #e3f2fd; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 0, 1);">
+                <Label text="CURRENT TEMPERATURE" style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #1976d2; -fx-letter-spacing: 1px;"/>
+                <HBox alignment="BASELINE_CENTER" spacing="5">
+                    <Label fx:id="currentTempLabel" text="--.-" style="-fx-font-size: 42; -fx-font-weight: bold; -fx-text-fill: #1976d2;"/>
+                    <Label text="°C" style="-fx-font-size: 20; -fx-text-fill: #1976d2; -fx-font-weight: bold;"/>
+                </HBox>
+                <Label text="Real-time reading from Arduino" style="-fx-font-size: 10; -fx-text-fill: #666; -fx-alignment: center;"/>
+            </VBox>
+
+            <!-- Statistics Panel -->
+            <VBox spacing="12">
+                <Label text="TEMPERATURE STATISTICS" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #333; -fx-letter-spacing: 0.5px;"/>
+
+                <!-- Maximum Temperature -->
+                <HBox spacing="10" style="-fx-padding: 15; -fx-background-color: #ffebee; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(244,67,54,0.1), 4, 0, 0, 1);">
+                    <VBox spacing="3" HBox.hgrow="ALWAYS">
+                        <Label text="MAXIMUM" style="-fx-font-size: 10; -fx-text-fill: #666; -fx-font-weight: bold;"/>
+                        <HBox spacing="4" alignment="BASELINE_LEFT">
+                            <Label fx:id="maxTempLabel" text="--.-" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #d32f2f;"/>
+                            <Label text="°C" style="-fx-font-size: 14; -fx-text-fill: #d32f2f; -fx-font-weight: bold;"/>
+                        </HBox>
+                    </VBox>
+                    <Label text="🔴" style="-fx-font-size: 20; -fx-alignment: center;"/>
+                </HBox>
+
+                <!-- Minimum Temperature -->
+                <HBox spacing="10" style="-fx-padding: 15; -fx-background-color: #e8f5e8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(76,175,80,0.1), 4, 0, 0, 1);">
+                    <VBox spacing="3" HBox.hgrow="ALWAYS">
+                        <Label text="MINIMUM" style="-fx-font-size: 10; -fx-text-fill: #666; -fx-font-weight: bold;"/>
+                        <HBox spacing="4" alignment="BASELINE_LEFT">
+                            <Label fx:id="minTempLabel" text="--.-" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #388e3c;"/>
+                            <Label text="°C" style="-fx-font-size: 14; -fx-text-fill: #388e3c; -fx-font-weight: bold;"/>
+                        </HBox>
+                    </VBox>
+                    <Label text="🔵" style="-fx-font-size: 20; -fx-alignment: center;"/>
+                </HBox>
+
+                <!-- Average Temperature -->
+                <HBox spacing="10" style="-fx-padding: 15; -fx-background-color: #fff3e0; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(255,152,0,0.1), 4, 0, 0, 1);">
+                    <VBox spacing="3" HBox.hgrow="ALWAYS">
+                        <Label text="AVERAGE" style="-fx-font-size: 10; -fx-text-fill: #666; -fx-font-weight: bold;"/>
+                        <HBox spacing="4" alignment="BASELINE_LEFT">
+                            <Label fx:id="avgTempLabel" text="--.-" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #f57c00;"/>
+                            <Label text="°C" style="-fx-font-size: 14; -fx-text-fill: #f57c00; -fx-font-weight: bold;"/>
+                        </HBox>
+                    </VBox>
+                    <Label text="🟡" style="-fx-font-size: 20; -fx-alignment: center;"/>
+                </HBox>
+            </VBox>
+
+            <!-- Spacer -->
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <!-- Control Buttons -->
+            <VBox spacing="12" style="-fx-padding: 10 0 0 0;">
+                <Label text="DATA CONTROLS" style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #666; -fx-letter-spacing: 0.5px;"/>
+
+                <Button fx:id="exportButton" text="📊 Export to CSV" onAction="#handleExport" disable="true"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 240; -fx-pref-height: 45; -fx-background-radius: 8; -fx-font-size: 13; -fx-effect: dropshadow(gaussian, rgba(76,175,80,0.3), 6, 0, 0, 2);"/>
+
+                <Button fx:id="clearButton" text="🗑️ Clear All Data" onAction="#handleClear" disable="true"
+                        style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 240; -fx-pref-height: 45; -fx-background-radius: 8; -fx-font-size: 13; -fx-effect: dropshadow(gaussian, rgba(255,152,0,0.3), 6, 0, 0, 2);"/>
+            </VBox>
+        </VBox>
+
+        <!-- Right Panel - Chart -->
+        <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <VBox style="-fx-padding: 25; -fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);"
+                  VBox.vgrow="ALWAYS">
+
+                <!-- Chart Header with Controls -->
+                <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 0 0 20 0;">
+                    <Label text="REAL-TIME TEMPERATURE CHART" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #333; -fx-letter-spacing: 0.5px;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+
+                    <!-- Chart Controls -->
+                    <HBox spacing="15" alignment="CENTER_RIGHT">
+                        <Label text="Time Range:" style="-fx-font-size: 12; -fx-text-fill: #666; -fx-font-weight: bold;"/>
+                        <ComboBox fx:id="timeRangeComboBox" prefWidth="130"
+                                  style="-fx-font-size: 11; -fx-background-radius: 6;"/>
+                        <CheckBox fx:id="autoScaleCheckBox" text="Auto Scale Y-Axis"
+                                  style="-fx-font-size: 11; -fx-text-fill: #666;"/>
+                    </HBox>
+                </HBox>
+
+                <!-- Temperature Chart -->
+                <LineChart fx:id="tempChart" animated="false" createSymbols="false"
+                           VBox.vgrow="ALWAYS" minHeight="400"
+                           style="-fx-background-color: transparent; -fx-padding: 10;">
+                    <xAxis>
+                        <NumberAxis fx:id="xAxis" label="Time (seconds)" autoRanging="false"
+                                    lowerBound="0" upperBound="60" tickUnit="10"
+                                    minorTickVisible="false" tickMarkVisible="true"
+                                    style="-fx-tick-label-font-size: 11px; -fx-font-weight: bold;"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis fx:id="yAxis" label="Temperature (°C)" autoRanging="false"
+                                    lowerBound="0" upperBound="50" tickUnit="5"
+                                    minorTickVisible="false" tickMarkVisible="true"
+                                    style="-fx-tick-label-font-size: 11px; -fx-font-weight: bold;"/>
+                    </yAxis>
+                </LineChart>
+
+                <!-- Chart Status Info -->
+                <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10 0 0 0;">
+                    <Label text="📡" style="-fx-font-size: 14;"/>
+                    <Label text="Live data updates every 100ms" style="-fx-font-size: 11; -fx-text-fill: #666;"/>
+                    <Separator orientation="VERTICAL" prefHeight="15"/>
+                    <Label text="🔄" style="-fx-font-size: 14;"/>
+                    <Label text="Chart refreshes automatically" style="-fx-font-size: 11; -fx-text-fill: #666;"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </HBox>
+</VBox>

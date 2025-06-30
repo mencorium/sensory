@@ -1,0 +1,60 @@
+/* Chart styling for temperature dashboard */
+
+.chart {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+.chart-plot-background {
+    -fx-background-color: #fafafa;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+}
+
+.chart-series-line {
+    -fx-stroke: #2196F3;
+    -fx-stroke-width: 2px;
+    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.3), 3, 0, 0, 1);
+}
+
+.chart-line-symbol {
+    -fx-background-color: #2196F3;
+    -fx-background-radius: 4px;
+    -fx-padding: 4px;
+    -fx-border-color: white;
+    -fx-border-width: 2px;
+}
+
+.chart-line-symbol:hover {
+    -fx-background-color: #1976D2;
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+.axis {
+    -fx-tick-label-fill: #666666;
+    -fx-tick-label-font-size: 11px;
+}
+
+.axis-label {
+    -fx-text-fill: #666666;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.chart-title {
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 5px;
+}
+
+.chart-legend-item {
+    -fx-text-fill: #666666;
+    -fx-font-size: 11px;
+}
